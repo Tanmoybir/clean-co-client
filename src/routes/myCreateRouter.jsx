@@ -5,6 +5,10 @@ import About from "../pages/About/About"
 import Contact from "../pages/Contact/Contact"
 import Login from "../pages/Login/Login"
 import Register from "../pages/Register/Register"
+import PrivateRoute from "./PrivateRoute";
+import Services from "../pages/Services/Services";
+import Booking from "../pages/Booking/Booking";
+import Orders from "../pages/Orders/Orders";
 
 const myCreateRouter = createBrowserRouter([
     {
@@ -17,11 +21,23 @@ const myCreateRouter = createBrowserRouter([
             },
             {
                 path: 'about',
-                element:<About/>
+                element:<PrivateRoute><About/></PrivateRoute>
             },
             {
                 path:'contact',
                 element:<Contact/>
+            },
+            {
+                path:'/services',
+                element: <PrivateRoute><Services/></PrivateRoute>
+            },
+            {
+                path:'/booking/:id',
+                element:<PrivateRoute><Booking/></PrivateRoute>
+            },
+            {
+                path: '/orders',
+                element:<PrivateRoute><Orders/></PrivateRoute>
             }
         ])     
     },

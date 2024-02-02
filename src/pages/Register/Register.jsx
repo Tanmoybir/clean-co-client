@@ -1,7 +1,9 @@
+import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Register = () => {
-    const { createUser } = useAuth()
+    const { createUser, profile } = useAuth()
 
 
     const handleRegister = (e) => {
@@ -9,13 +11,20 @@ const Register = () => {
         const form = e.target
         const email = form.email.value
         const password = form.password.value
-        console.log(email, password);
+        const name = form.name.value
+        const image = form.image.value
+
         createUser(email, password)
             .then(result => {
-                console.log(result.user);
+                profile(name, image)
+                    .then(() => {
+                        console.log(result.user);
+                        toast.success('User Created Successfully')
+                    })
             })
             .catch(error => {
                 console.log(error);
+                toast.error(error.message)
             })
     }
     return (
@@ -27,6 +36,12 @@ const Register = () => {
             </div>
             <form onSubmit={handleRegister} className="p-8 flex-1">
                 <h1 className="text-4xl pb-4">Register</h1>
+                <div className="space-y-5 mb-3">
+                    <label htmlFor="" className="block">Name</label>
+                    <input id="text" name="name" type="name" placeholder="Enter your Name" className="p-3 block w-full shadow-lg outline-none border-2 rounded-md border-dashed  invalid:border-red-700 valid:border-[#0095ff]" />
+                    <label htmlFor="" className="block">Image URL</label>
+                    <input id="image" name="image" type="url" placeholder="image url" min={5} className="p-3 block w-full shadow-lg outline-none border-2 rounded-md border-dashed invalid:border-red-700 valid:border-[#0095ff]" />
+                </div>
                 <div className="space-y-5">
                     <label htmlFor="email" className="block">Email</label>
                     <input id="email" name="email" type="email" placeholder="example@example.com" className="p-3 block w-full shadow-lg outline-none border-2 rounded-md border-dashed  invalid:border-red-700 valid:border-[#0095ff]" />
@@ -34,8 +49,17 @@ const Register = () => {
                     <input id="password" name="password" type="password" placeholder=".............." min={5} className="p-3 block w-full shadow-lg outline-none border-2 rounded-md border-dashed invalid:border-red-700 valid:border-[#0095ff]" />
                 </div>
                 {/* button type will be submit for handling form submission*/}
-                <button type="submit" className="py-2 px-5 mb-4 mt-8 overflow-hidden shadow-lg border-2 rounded-md border-dashed border-[#0095ff] before:block before:absolute before:translate-x-full before:inset-0 before:bg-[#0095ff] before:hover:translate-x-0  before:duration-300 before:rounded-s-full before:-z-10 after:-z-10 after:rounded-e-full after:duration-300 after:hover:translate-x-0 after:block after:absolute after:-translate-x-full after:inset-0 after:bg-[#0095ff] relative inline-block hover:text-white z-50">Submit</button>
+                <button type="submit"
+                    className="py-2 px-5 mb-4 mt-8 overflow-hidden shadow-lg border-2 rounded-md border-dashed border-[#0095ff] 
+                before:block before:absolute before:translate-x-full 
+                before:inset-0 before:bg-[#0095ff] before:hover:translate-x-0  
+                before:duration-300 before:rounded-s-full before:-z-10 after:-z-10 
+                after:rounded-e-full after:duration-300 after:hover:translate-x-0 
+                after:block after:absolute after:-translate-x-full after:inset-0 
+                after:bg-[#0095ff] relative inline-block hover:text-white z-50">Submit</button>
+                <p className="mb-3 text-center">Don{`'`}t have an account?<Link to={'/login'} className="underline font-semibold">Login</Link></p>
             </form>
+
         </div>
     );
 };
